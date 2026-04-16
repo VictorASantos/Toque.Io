@@ -1,0 +1,6 @@
+{
+  "name": "Toque.Io",
+  "description": "Um gerador interativo de Soft UI (Neumorfismo) chamado Toque.Io, com controles em tempo real e exportação de CSS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
