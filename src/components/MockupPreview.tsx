@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, CreditCard, Music, LayoutDashboard, Smartphone } from 'lucide-react';
-import { logEvent } from '../firebase';
 
 interface MockupPreviewProps {
   background: string;
@@ -21,26 +20,10 @@ export const MockupPreview: React.FC<MockupPreviewProps> = ({ background, boxSha
     borderRadius: radius,
   };
 
-  const handleOpen = () => {
-    setIsOpen(true);
-    logEvent('morfik_interaction', {
-      item_id: 'mockup_modal_open',
-      item_category: 'ui_mockup'
-    });
-  };
-
-  const handleMockupChange = (id: 'card' | 'music' | 'dash') => {
-    setActiveMockup(id);
-    logEvent('morfik_interaction', {
-      item_id: `mockup_view_${id}`,
-      item_category: 'ui_mockup'
-    });
-  };
-
   return (
     <>
       <button
-        onClick={handleOpen}
+        onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 transition-all text-[14px] font-bold shadow-xl active:scale-95"
         style={{ color: textColor }}
       >
@@ -82,7 +65,7 @@ export const MockupPreview: React.FC<MockupPreviewProps> = ({ background, boxSha
                   ].map((m) => (
                     <button
                       key={m.id}
-                      onClick={() => handleMockupChange(m.id as any)}
+                      onClick={() => setActiveMockup(m.id as any)}
                       className={`flex items-center gap-3 p-4 rounded-2xl transition-all text-left ${
                         activeMockup === m.id ? 'bg-black/5 shadow-inner' : 'hover:bg-black/5'
                       }`}

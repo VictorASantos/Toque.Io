@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
-import { logEvent } from '../firebase';
 
 interface CodeExporterProps {
   color: string;
@@ -94,14 +93,6 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
     return JSON.stringify(tokens, null, 2);
   };
 
-  const handleTabChange = (tab: 'css' | 'tailwind' | 'rn' | 'json') => {
-    setActiveTab(tab);
-    logEvent('morfik_interaction', {
-      item_id: `tab_${tab}`,
-      item_category: 'code_exporter_tab'
-    });
-  };
-
   const copyToClipboard = () => {
     const code = 
       activeTab === 'css' ? getCssCode() : 
@@ -110,12 +101,6 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
       getJsonCode();
     navigator.clipboard.writeText(code);
     setCopied(true);
-    
-    logEvent('morfik_interaction', {
-      item_id: `copy_${activeTab}`,
-      item_category: 'css_code'
-    });
-
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -125,7 +110,7 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
         {(['css', 'tailwind', 'rn', 'json'] as const).map((tab) => (
           <button
             key={tab}
-            onClick={() => handleTabChange(tab)}
+            onClick={() => setActiveTab(tab)}
             className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all whitespace-nowrap ${
               activeTab === tab ? 'bg-white/10 shadow-sm' : 'opacity-50 hover:opacity-100'
             }`}

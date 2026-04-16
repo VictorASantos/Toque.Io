@@ -10,7 +10,7 @@ import { ColorPicker } from './components/ColorPicker';
 import { DirectionControl } from './components/DirectionControl';
 import { calculateShadows, calculateBackground, getContrastColor } from './utils/colorUtils';
 import { Copy, Check, LogIn, LogOut, User as UserIcon } from 'lucide-react';
-import { auth, signInWithGoogle, logout, User, logEvent } from './firebase';
+import { auth, signInWithGoogle, logout, User } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { AccessibilityBadge } from './components/AccessibilityBadge';
 import { CodeExporter } from './components/CodeExporter';
@@ -61,14 +61,6 @@ export default function App() {
     calculateShadows(color, intensity, 10, 20, 'tl', 'flat'),
     [color, intensity]
   );
-
-  const handleShapeChange = (s: Shape) => {
-    setShape(s);
-    logEvent('preset_applied', {
-      item_id: s,
-      item_category: 'ui_preset'
-    });
-  };
 
   return (
     <div 
@@ -177,7 +169,7 @@ export default function App() {
               {(['flat', 'concave', 'convex', 'pressed'] as Shape[]).map((s) => (
                 <button
                   key={s}
-                  onClick={() => handleShapeChange(s)}
+                  onClick={() => setShape(s)}
                   className={`
                     py-[10px] px-[5px] rounded-[8px] text-[10px] font-bold uppercase transition-all
                     ${shape === s 
